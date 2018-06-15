@@ -47,5 +47,32 @@
             <type>xml</type>
             <classifier>features</classifier>
         </dependency>
+
+        <dependency>
+            <groupId>org.falcon.rulecleaner.securestate</groupId>
+            <artifactId>securestate-impl</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.falcon.rulecleaner.statemonitor</groupId>
+            <artifactId>statemonitor-impl</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.falcon.rulecleaner.rulechecker</groupId>
+            <artifactId>rulechecker-impl</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.falcon.rulecleaner.cleanup</groupId>
+            <artifactId>cleanup-impl</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.falcon.rulecleaner.cleanuphandler</groupId>
+            <artifactId>cleanuphandler-impl</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 </project>
