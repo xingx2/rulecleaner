@@ -30,7 +30,6 @@ public class SecureStateProvider {
 
     public void init() {
         serviceRpcRegistration = rpcProviderRegistry.addRpcImplementation(SecureStateService.class, new SecureStateImpl(dataBroker));
-        SecureStateImpl secureStateImpl = new SecureStateImpl(dataBroker);
         LOG.info("SecureState initialized.");
     }
 

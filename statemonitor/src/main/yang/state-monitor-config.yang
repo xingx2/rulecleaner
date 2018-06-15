@@ -27,7 +27,7 @@ module state-monitor-config {
                     description "The network is at high risk. ";
                 }
             }
-            default 2;
+            default "level-2";
         }
     }
 }

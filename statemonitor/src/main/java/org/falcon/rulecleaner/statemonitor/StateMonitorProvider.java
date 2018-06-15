@@ -36,7 +36,7 @@ public class StateMonitorProvider {
     public void init() {
         StateMonitor stateMonitor = new StateMonitor(dataBroker, cordon, ruleCheckerService);
         listenerRegistration = stateMonitor.register(dataBroker);
-        LOG.info("state monitor initialized.");
+        LOG.info("StateMointor initialized.");
     }
 
     public void close() {
@@ -45,6 +45,6 @@ public class StateMonitorProvider {
         } catch (Exception e) {
             LOG.error("Failed to close registration={}", listenerRegistration, e);
         }
-        LOG.info("state monitor torn down.", this);
+        LOG.info("StateMonitor torn down.", this);
     }
 }

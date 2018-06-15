@@ -37,7 +37,7 @@ module secure-state {
                         description "The network is at high risk.";
                     }
                  }
-                 default 0;
+                 default "level-0";
              }
         }
         output{

@@ -86,11 +86,11 @@
             </dependency>
 
             <dependency>
-              <groupId>org.opendaylight.l2switch</groupId>
-              <artifactId>l2switch-artifacts</artifactId>
-              <version>${l2switch.version}</version>
-              <scope>import</scope>
-              <type>pom</type>
+                <groupId>org.opendaylight.l2switch</groupId>
+                <artifactId>l2switch-artifacts</artifactId>
+                <version>${l2switch.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
 
 

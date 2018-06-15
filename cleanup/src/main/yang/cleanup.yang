@@ -1,8 +1,8 @@
-module cleanup-config {
+module cleanup {
 
     yang-version 1;
-    namespace "urn:falcon:rulecleaner:cleanup-config";
-    prefix "cleanup-config";
+    namespace "urn:falcon:rulecleaner:cleanup";
+    prefix "cleanup";
 
     revision 2017-09-29 {
         description "Initial module.";
@@ -24,7 +24,7 @@ module cleanup-config {
                     description "The network is at high risk.";
                 }
             }
-            default 2;
+            default "level-2";
         }
     }
 

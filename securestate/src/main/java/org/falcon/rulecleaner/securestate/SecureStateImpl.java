@@ -36,6 +36,7 @@ public class SecureStateImpl implements SecureStateService {
 
     @Override
     public Future<RpcResult<SetSecureStateOutput>> setSecureState(SetSecureStateInput input) {
+        System.out.println("[SecureState] receive rpc request");
         RpcResultBuilder<SetSecureStateOutput> rpcResultBuilder = null;
         rpcResultBuilder = RpcResultBuilder.failed();
         SetSecureStateOutputBuilder setSecureStateOutputBuilder = new SetSecureStateOutputBuilder();
@@ -48,8 +49,7 @@ public class SecureStateImpl implements SecureStateService {
         try {
             readWriteTransaction.submit().checkedGet();
             rpcResultBuilder = RpcResultBuilder.success();
-            System.out.println("###secure-state receives restful request###");
-            System.out.println("The secure state is set to " + input.getLevel().getName());
+            System.out.println("[SecureState] The secure state is set to " + input.getLevel().getName());
             setSecureStateOutputBuilder.setResult("OK, the secure state is set to " + input.getLevel().getName());
         } catch (TransactionCommitFailedException tcfe) {
             setSecureStateOutputBuilder.setResult("Woops, fail to set secure state");

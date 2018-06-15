@@ -8,25 +8,19 @@
                odl:type="default"/>
     <reference id="rpcProviderRegistry"
                interface="org.opendaylight.controller.sal.binding.api.RpcProviderRegistry"/>
+    <reference id="notificationPublishService"
+               interface="org.opendaylight.controller.md.sal.binding.api.NotificationPublishService"/>
+    <odl:clustered-app-config id="cleanupConfig"
+                              binding-class="org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.cleanup.rev170929.CleanupConfig">
+    </odl:clustered-app-config>
 
-
-    <bean id="secureStateProvider"
-          class="org.falcon.rulecleaner.securestate.SecureStateProvider"
+    <bean id="cleanupProvider"
+          class="org.falcon.rulecleaner.cleanup.CleanupProvider"
           init-method="init" destroy-method="close">
         <argument ref="dataBroker"/>
         <argument ref="rpcProviderRegistry"/>
+        <argument ref="notificationPublishService"/>
+        <argument ref="cleanupConfig"/>
     </bean>
-
-    <bean id="secureStateImpl"
-          class="org.falcon.rulecleaner.securestate.SecureStateImpl">
-        <argument ref="dataBroker"/>
-        <argument ref="rpcProviderRegistry"/>
-    </bean>
-
-    <odl:rpc-implementation ref="secureStateImpl"/>
-    <service ref="secureStateImpl"
-             interface="org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.secure.state.rev170929.SecureStateService" odl:type="default"/>
-
-
 
 </blueprint>

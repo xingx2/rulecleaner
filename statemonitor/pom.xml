@@ -68,7 +68,8 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.state.monitor.config.rev170929
+                        <Export-Package>
+                            org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.state.monitor.config.rev170929
                         </Export-Package>
                         <Import-Package>*</Import-Package>
                     </instructions>

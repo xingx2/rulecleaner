@@ -34,8 +34,8 @@ public class StateMonitor implements DataTreeChangeListener<SecureState> {
     private static final Logger LOG = LoggerFactory.getLogger(StateMonitor.class);
 
     private final DataBroker dataBroker;
-    private StateMonitorConfig.Cordon cordon;
     private final RuleCheckerService ruleCheckerService;
+    private StateMonitorConfig.Cordon cordon;
     private InstanceIdentifier<SecureState> identifier = InstanceIdentifier.create(SecureState.class);
 
 
@@ -51,29 +51,24 @@ public class StateMonitor implements DataTreeChangeListener<SecureState> {
 
     @Override
     public void onDataTreeChanged(@Nonnull Collection<DataTreeModification<SecureState>> changes) {
-        System.out.println("###address-tracker hears Secure-state data tree modification###");
+        System.out.println("[StateMonitor] hear secure-state data tree modification");
         for (DataTreeModification<SecureState> change : changes) {
             SecureState dataAfter = change.getRootNode().getDataAfter();
-            //ReadWriteTransaction readWriteTransaction = dataBroker.newReadWriteTransaction();
-            //InstanceIdentifier<SelfDestructSwitch> id = InstanceIdentifier.builder(SelfDestructSwitch.class).build();
-            //SelfDestructSwitchBuilder selfDestructSwitchBuilder = new SelfDestructSwitchBuilder();
 
             assert dataAfter != null;
             if (dataAfter.getLevel() >= cordon.getIntValue()) {
-                //selfDestructSwitchBuilder.setSwitch(true);
-                System.out.println("beyond the cordon, check rules...");
+                System.out.println("[StateMonitor] beyond the cordon, check rules...");
                 final Future<RpcResult<RuleCheckOutput>> rpcResultFuture = ruleCheckerService.ruleCheck();
                 try {
                     RuleCheckOutput result = rpcResultFuture.get().getResult();
-                    if(result!=null){
-                        System.out.println(result.getResult());
+                    if (result != null) {
+                        System.out.println("[StateMonitor] check finished, receive response: " + result.getResult());
                     }
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
             } else {
-                //selfDestructSwitchBuilder.setSwitch(false);
-                System.out.println("under the cordon");
+                System.out.println("[StateMonitor] under the cordon");
             }
         }
     }

@@ -11,8 +11,8 @@ import org.opendaylight.controller.md.sal.binding.api.DataBroker;
 import org.opendaylight.controller.md.sal.binding.api.NotificationPublishService;
 import org.opendaylight.controller.sal.binding.api.BindingAwareBroker;
 import org.opendaylight.controller.sal.binding.api.RpcProviderRegistry;
-import org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.cleanup.config.rev170929.CleanupConfig;
-import org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.cleanup.config.rev170929.CleanupConfigService;
+import org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.cleanup.rev170929.CleanupConfig;
+import org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.cleanup.rev170929.CleanupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public class CleanupProvider {
     private final RpcProviderRegistry rpcProviderRegistry;
     private final NotificationPublishService notificationPublishService;
 
-    private BindingAwareBroker.RpcRegistration<CleanupConfigService> rpcRegistration;
+    private BindingAwareBroker.RpcRegistration<CleanupService> rpcRegistration;
 
     public CleanupProvider(final DataBroker dataBroker,
                            final CleanupConfig config,
@@ -39,8 +39,7 @@ public class CleanupProvider {
     }
 
     public void init() {
-        rpcRegistration = rpcProviderRegistry.addRpcImplementation(CleanupConfigService.class, new CleanupImpl(dataService, notificationPublishService, config.getCordon()));
-
+        rpcRegistration = rpcProviderRegistry.addRpcImplementation(CleanupService.class, new CleanupImpl(dataService, notificationPublishService, config.getCordon()));
         LOG.info("Cleanup initialized.");
     }
 

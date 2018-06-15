@@ -10,11 +10,15 @@
     <odl:rpc-service id="ruleCheckerService"
                      interface="org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.rule.checker.rev170929.RuleCheckerService"/>
 
+    <odl:clustered-app-config id="stateMonitorConfig"
+                              binding-class="org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.state.monitor.config.rev170929.StateMonitorConfig">
+    </odl:clustered-app-config>
 
     <bean id="stateMointorProvider"
           class="org.falcon.rulecleaner.statemonitor.StateMonitorProvider"
           init-method="init" destroy-method="close">
         <argument ref="dataBroker"/>
+        <argument ref="stateMonitorConfig"/>
         <argument ref="ruleCheckerService"/>
     </bean>
 

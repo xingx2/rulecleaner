@@ -17,7 +17,7 @@ import org.opendaylight.controller.md.sal.binding.api.NotificationPublishService
 import org.opendaylight.controller.md.sal.binding.api.ReadOnlyTransaction;
 import org.opendaylight.controller.md.sal.common.api.data.LogicalDatastoreType;
 import org.opendaylight.controller.md.sal.common.api.data.ReadFailedException;
-import org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.cleanup.config.rev170929.*;
+import org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.cleanup.rev170929.*;
 import org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.secure.state.rev170929.SecureState;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.opendaylight.yangtools.yang.common.RpcResult;
@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Future;
 
-public class CleanupImpl implements CleanupConfigService {
+public class CleanupImpl implements CleanupService {
     private static final Logger LOG = LoggerFactory.getLogger(CleanupImpl.class);
     private NotificationPublishService notificationPublishService;
     private DataBroker dataBroker;
@@ -36,15 +36,16 @@ public class CleanupImpl implements CleanupConfigService {
     public CleanupImpl(DataBroker dataBroker, NotificationPublishService notificationPublishService, CleanupConfig.Cordon cordon) {
         this.dataBroker = dataBroker;
         this.notificationPublishService = notificationPublishService;
+        this.cordon = cordon;
     }
 
     @Override
     public Future<RpcResult<RuleCleanupOutput>> ruleCleanup() {
+        System.out.println("[Cleanup] receive restful request");
         RpcResultBuilder<RuleCleanupOutput> rpcResultBuilder = null;
         rpcResultBuilder = RpcResultBuilder.failed();
 
         RuleCleanupOutputBuilder ruleCleanupOutputBuilder = new RuleCleanupOutputBuilder();
-
         ReadOnlyTransaction readOnlyTransaction = dataBroker.newReadOnlyTransaction();
         InstanceIdentifier<SecureState> id = InstanceIdentifier.builder(SecureState.class).build();
         CheckedFuture<Optional<SecureState>, ReadFailedException> checkedFuture = readOnlyTransaction.read(LogicalDatastoreType.CONFIGURATION, id);
@@ -53,13 +54,11 @@ public class CleanupImpl implements CleanupConfigService {
             Optional<SecureState> optional = checkedFuture.checkedGet();
             if (optional.isPresent()) {
                 if (optional.get().getLevel() >= cordon.getIntValue()) {
-                    System.out.println("Start to rule clean.");
                     NetworkCleanupBuilder networkCleanupBuilder = new NetworkCleanupBuilder();
                     networkCleanupBuilder.setIfCleanup(true);
                     try {
                         notificationPublishService.putNotification(networkCleanupBuilder.build());
-
-                        System.out.println("###cleanup receives restful request###");
+                        System.out.println("[Cleanup] publish network cleanup notification.");
                         ruleCleanupOutputBuilder.setResult("Success to publish network cleanup notification.");
                         rpcResultBuilder = RpcResultBuilder.success();
 
@@ -67,7 +66,7 @@ public class CleanupImpl implements CleanupConfigService {
                         ruleCleanupOutputBuilder.setResult("Woops, fail to publish network destruct notification.");
                     }
                 } else {
-                    System.out.println("We can still make it.");
+                    System.out.println("[Cleanup] We can still make it.");
                     ruleCleanupOutputBuilder.setResult("The secure state is lower than cordon");
                 }
             } else {

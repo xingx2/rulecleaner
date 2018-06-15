@@ -43,6 +43,7 @@ public class RuleCheckerImpl implements RuleCheckerService {
 
 
     public List<String> probeTesting() {
+        System.out.println("[ProbeTesting] search faulty switches");
         List<String> faultySwitches = new ArrayList();
 
         ReadOnlyTransaction readOnlyTransaction = dataBroker.newReadOnlyTransaction();
@@ -55,6 +56,7 @@ public class RuleCheckerImpl implements RuleCheckerService {
                 int switchNum = optional.get().getNode().size();
                 Thread.sleep(switchNum);
                 int faultyNum = (int) (Math.random() * switchNum);
+                if (faultyNum == 0 && switchNum > 0) faultyNum++;
                 for (int i = 0; i < faultyNum; i++) {
                     faultySwitches.add(optional.get().getNode().get(i).getKey().getId().getValue());
                 }
@@ -72,6 +74,7 @@ public class RuleCheckerImpl implements RuleCheckerService {
 
     @Override
     public Future<RpcResult<RuleCheckOutput>> ruleCheck() {
+        System.out.println("[RuleChecker] receive rpc request");
         RpcResultBuilder<RuleCheckOutput> rpcResultBuilder = null;
         rpcResultBuilder = RpcResultBuilder.failed();
         RuleCheckOutputBuilder ruleCheckOutputBuilder = new RuleCheckOutputBuilder();
@@ -79,12 +82,17 @@ public class RuleCheckerImpl implements RuleCheckerService {
         ReadWriteTransaction readWriteTransaction = dataBroker.newReadWriteTransaction();
         InstanceIdentifier<FaultySwitches> id = InstanceIdentifier.builder(FaultySwitches.class).build();
         FaultySwitchesBuilder faultySwitchesBuilder = new FaultySwitchesBuilder();
-        faultySwitchesBuilder.setId(probeTesting());
+        List<String> faultySwitches = probeTesting();
+        faultySwitchesBuilder.setId(faultySwitches);
         readWriteTransaction.put(LogicalDatastoreType.CONFIGURATION, id, faultySwitchesBuilder.build());
         try {
             readWriteTransaction.submit().checkedGet();
             rpcResultBuilder = RpcResultBuilder.success();
-            ruleCheckOutputBuilder.setResult("Rule checking finished");
+            if (faultySwitches.size() > 1)
+                ruleCheckOutputBuilder.setResult("find " + faultySwitches.size() + " faulty switches");
+            else
+                ruleCheckOutputBuilder.setResult("find " + faultySwitches.size() + " faulty switch");
+            System.out.println("[RuleChecker] Rule checking finished");
         } catch (TransactionCommitFailedException tcfe) {
             ruleCheckOutputBuilder.setResult("Woops, fail to checking rules");
         }
