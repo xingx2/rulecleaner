@@ -6,7 +6,9 @@
 1. Module: securestate, statemonitor, rulechecker, cleanup, cleanuphandler
 2. Method: probeTesting
 
-*Just run the **karaf**.*
+*Build the controller and run the **karaf** with topology*
+
+*The probe test time is the switch number (seconds)*
 
 *You don't need to do any extra things or install any features.*
 
