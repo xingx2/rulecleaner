@@ -1,0 +1,49 @@
+module secure-state {
+
+    yang-version 1;
+    namespace "urn:falcon:rulecleaner:secure-state";
+    prefix "secure-state";
+
+    description
+        "secure state rpc provider";
+
+    revision 2017-09-29 {
+        description "Initial revision.";
+    }
+
+
+    container secure-state{
+        leaf level {
+            type uint16;
+            default 0;
+            description "Security level of the network";
+        }
+    }
+
+    rpc set-secure-state{
+        input {
+             leaf level {
+                 type enumeration {
+                    enum "level-0" {
+                        value 0;
+                        description "Nothing serious";
+                    }
+                    enum "level-1" {
+                        value 1;
+                        description "The network is in danger, turn safe Mode on. ";
+                    }
+                    enum "level-2" {
+                        value 2;
+                        description "The network is at high risk.";
+                    }
+                 }
+                 default 0;
+             }
+        }
+        output{
+            leaf result{
+                type string;
+            }
+        }
+    }
+}

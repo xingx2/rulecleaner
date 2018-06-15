@@ -1,0 +1,27 @@
+module rule-checker {
+
+    yang-version 1;
+    namespace "urn:falcon:rulecleaner:rule-checker";
+    prefix "rule-checker";
+
+    description
+        "This module contains the base configuration for rule checker
+        implementation.";
+
+    revision 2017-09-29 {
+        description "Initial module draft.";
+    }
+
+    container faulty-switches {
+        leaf-list id {
+            type string;
+        }
+    }
+    rpc rule-check{
+        output{
+            leaf result{
+                type string;
+            }
+        }
+    }
+}

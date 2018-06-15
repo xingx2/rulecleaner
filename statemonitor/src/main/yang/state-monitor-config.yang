@@ -1,0 +1,33 @@
+module state-monitor-config {
+
+    yang-version 1;
+    namespace "urn:falcon:rulecleaner:state-monitor-config";
+    prefix "state-monitor-config";
+
+    description
+        "This module contains the base configuration for state-monitor.";
+
+    revision 2017-09-29 {
+        description "Initial module.";
+    }
+
+    container state-monitor-config {
+        leaf cordon {
+            type enumeration {
+                enum "level-0" {
+                    value 0;
+                    description "Nothing serious";
+                }
+                enum "level-1" {
+                    value 1;
+                    description "The network is in danger.";
+                }
+                enum "level-2" {
+                    value 2;
+                    description "The network is at high risk. ";
+                }
+            }
+            default 2;
+        }
+    }
+}

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.opendaylight.odlparent</groupId>
+        <artifactId>features-parent</artifactId>
+        <version>1.8.1-Carbon</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>org.falcon.rulecleaner</groupId>
+    <artifactId>features-rulecleaner</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>${project.artifactId}</name>
+    <description> <!-- Provide a Description it will be visible in the shell CLI--> </description>
+
+    <properties>
+        <dluxapps.version>0.5.1-Carbon</dluxapps.version>
+        <mdsal.version>1.5.1-Carbon</mdsal.version>
+        <openflow.plugin.version>0.4.1-Carbon</openflow.plugin.version>
+        <restconf.version>1.5.1-Carbon</restconf.version>
+        <l2switch.version>0.5.1-Carbon</l2switch.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.falcon.rulecleaner</groupId>
+                <artifactId>rulecleaner-parent</artifactId>
+                <version>${project.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.opendaylight.openflowplugin</groupId>
+            <artifactId>features-openflowplugin</artifactId>
+            <classifier>features</classifier>
+            <type>xml</type>
+        </dependency>
+        <dependency>
+            <groupId>org.opendaylight.controller</groupId>
+            <artifactId>features-mdsal</artifactId>
+            <classifier>features</classifier>
+            <type>xml</type>
+        </dependency>
+        <dependency>
+            <groupId>org.opendaylight.netconf</groupId>
+            <artifactId>features-restconf</artifactId>
+            <classifier>features</classifier>
+            <version>${restconf.version}</version>
+            <type>xml</type>
+        </dependency>
+        <dependency>
+            <groupId>org.opendaylight.dluxapps</groupId>
+            <artifactId>features-dluxapps</artifactId>
+            <version>${dluxapps.version}</version>
+            <classifier>features</classifier>
+            <type>xml</type>
+        </dependency>
+
+        <!-- bundles used by features directly -->
+        <dependency>
+            <groupId>org.falcon.rulecleaner.securestate</groupId>
+            <artifactId>securestate-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.falcon.rulecleaner.statemonitor</groupId>
+            <artifactId>statemonitor-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.falcon.rulecleaner.rulechecker</groupId>
+            <artifactId>rulechecker-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.falcon.rulecleaner.cleanup</groupId>
+            <artifactId>cleanup-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.falcon.rulecleaner.cleanuphandler</groupId>
+            <artifactId>cleanuphandler-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>

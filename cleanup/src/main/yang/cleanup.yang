@@ -1,0 +1,45 @@
+module cleanup-config {
+
+    yang-version 1;
+    namespace "urn:falcon:rulecleaner:cleanup-config";
+    prefix "cleanup-config";
+
+    revision 2017-09-29 {
+        description "Initial module.";
+    }
+
+    container cleanup-config {
+        leaf cordon {
+            type enumeration {
+                enum "level-0" {
+                    value 0;
+                    description "Nothing serious";
+                }
+                enum "level-1" {
+                    value 1;
+                    description "The network is in danger.";
+                }
+                enum "level-2" {
+                    value 2;
+                    description "The network is at high risk.";
+                }
+            }
+            default 2;
+        }
+    }
+
+    rpc rule-cleanup{
+        output{
+            leaf result{
+                type string;
+            }
+        }
+    }
+
+    notification network-cleanup{
+        leaf if-cleanup{
+            type boolean;
+            description "Tell cleanuphandler module to clean rules in faulty switches.";
+        }
+    }
+}

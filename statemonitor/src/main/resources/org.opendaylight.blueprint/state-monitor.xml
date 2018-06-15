@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns:odl="http://opendaylight.org/xmlns/blueprint/v1.0.0"
+           xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           odl:use-default-for-reference-types="true">
+
+    <reference id="dataBroker"
+               interface="org.opendaylight.controller.md.sal.binding.api.DataBroker"
+               odl:type="default"/>
+
+    <odl:rpc-service id="ruleCheckerService"
+                     interface="org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.rule.checker.rev170929.RuleCheckerService"/>
+
+
+    <bean id="stateMointorProvider"
+          class="org.falcon.rulecleaner.statemonitor.StateMonitorProvider"
+          init-method="init" destroy-method="close">
+        <argument ref="dataBroker"/>
+        <argument ref="ruleCheckerService"/>
+    </bean>
+
+</blueprint>
