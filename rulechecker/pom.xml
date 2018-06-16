@@ -104,11 +104,6 @@
             <groupId>org.opendaylight.mdsal</groupId>
             <artifactId>yang-binding</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.opendaylight.controller.model</groupId>
-            <artifactId>model-inventory</artifactId>
-            <type>jar</type>
-        </dependency>
         <!--
         <dependency>
             <groupId>org.opendaylight.l2switch.addresstracker</groupId>
