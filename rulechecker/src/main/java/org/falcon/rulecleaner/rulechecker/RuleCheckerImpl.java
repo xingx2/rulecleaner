@@ -18,6 +18,7 @@ import org.opendaylight.controller.md.sal.common.api.data.LogicalDatastoreType;
 import org.opendaylight.controller.md.sal.common.api.data.ReadFailedException;
 import org.opendaylight.controller.md.sal.common.api.data.TransactionCommitFailedException;
 import org.opendaylight.yang.gen.v1.urn.falcon.rulecleaner.rule.checker.rev170929.*;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.inventory.rev130819.Nodes;
 import org.opendaylight.yang.gen.v1.urn.tbd.params.xml.ns.yang.network.topology.rev131021.NetworkTopology;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.opendaylight.yangtools.yang.common.RpcResult;
@@ -25,6 +26,7 @@ import org.opendaylight.yangtools.yang.common.RpcResultBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.soap.Node;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -47,19 +49,18 @@ public class RuleCheckerImpl implements RuleCheckerService {
         List<String> faultySwitches = new ArrayList<>();
 
         ReadOnlyTransaction readOnlyTransaction = dataBroker.newReadOnlyTransaction();
-        InstanceIdentifier<NetworkTopology> id = InstanceIdentifier.builder(NetworkTopology.class).build();
-        CheckedFuture<Optional<NetworkTopology>, ReadFailedException> checkedFuture = readOnlyTransaction.read(LogicalDatastoreType.OPERATIONAL, id);
+        InstanceIdentifier<Nodes> id = InstanceIdentifier.builder(Nodes.class).build();
+        CheckedFuture<Optional<Nodes>, ReadFailedException> checkedFuture = readOnlyTransaction.read(LogicalDatastoreType.OPERATIONAL, id);
 
         try {
-            Optional<NetworkTopology> optional = checkedFuture.checkedGet();
+            Optional<Nodes> optional = checkedFuture.checkedGet();
             if (optional.isPresent()) {
-                int switchNum = optional.get().getTopology().get(0).getNode().size();
+                int switchNum = optional.get().getNode().size();
                 Thread.sleep(switchNum);
                 int faultyNum = (int) (Math.random() * switchNum);
                 if (faultyNum == 0 && switchNum > 0) faultyNum = 1;
                 for (int i = 0; i < faultyNum; i++) {
-                    String data = optional.get().getTopology().get(0).getNode().get(i).getKey().getNodeId().getValue();
-                    faultySwitches.add(data);
+                    faultySwitches.add(optional.get().getNode().get(i).getId().getValue());
                 }
             } else {
                 System.out.println("Error: Data not found");
