@@ -44,7 +44,7 @@ public class RuleCheckerImpl implements RuleCheckerService {
 
     public List<String> probeTesting() {
         System.out.println("[ProbeTesting] search faulty switches");
-        List<String> faultySwitches = new ArrayList();
+        List<String> faultySwitches = new ArrayList<>();
 
         ReadOnlyTransaction readOnlyTransaction = dataBroker.newReadOnlyTransaction();
         InstanceIdentifier<NetworkTopology> id = InstanceIdentifier.builder(NetworkTopology.class).build();
@@ -56,16 +56,17 @@ public class RuleCheckerImpl implements RuleCheckerService {
                 int switchNum = optional.get().getTopology().get(0).getNode().size();
                 Thread.sleep(switchNum);
                 int faultyNum = (int) (Math.random() * switchNum);
-                if (faultyNum == 0 && switchNum > 0) faultyNum++;
+                if (faultyNum == 0 && switchNum > 0) faultyNum = 1;
                 for (int i = 0; i < faultyNum; i++) {
-                    faultySwitches.add(optional.get().getTopology().get(0).getNode().get(i).getKey().getNodeId().getValue());
+                    String data = optional.get().getTopology().get(0).getNode().get(i).getKey().getNodeId().getValue();
+                    faultySwitches.add(data);
                 }
             } else {
                 System.out.println("Error: Data not found");
             }
         } catch (ReadFailedException e) {
             e.printStackTrace();
-            System.out.println("Fail to read secure state");
+            System.out.println("Fail to read faulty switches");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
