@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.opendaylight.odlparent</groupId>
         <artifactId>single-feature-parent</artifactId>
-        <version>1.8.1-Carbon</version>
+        <version>1.9.0</version>
         <relativePath/>
     </parent>
 
@@ -29,21 +29,28 @@
         <dependency>
             <groupId>org.opendaylight.netconf</groupId>
             <artifactId>odl-restconf</artifactId>
-            <version>1.5.1-Carbon</version>
+            <version>1.6.0</version>
             <type>xml</type>
             <classifier>features</classifier>
         </dependency>
         <dependency>
             <groupId>org.opendaylight.netconf</groupId>
             <artifactId>odl-mdsal-apidocs</artifactId>
-            <version>1.5.1-Carbon</version>
+            <version>1.6.0</version>
             <type>xml</type>
             <classifier>features</classifier>
         </dependency>
         <dependency>
             <groupId>org.opendaylight.dluxapps</groupId>
             <artifactId>odl-dluxapps-topology</artifactId>
-            <version>0.5.1-Carbon</version>
+            <version>0.6.0</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.opendaylight.l2switch</groupId>
+            <artifactId>odl-l2switch-switch</artifactId>
+            <version>0.6.0</version>
             <type>xml</type>
             <classifier>features</classifier>
         </dependency>
